@@ -44,9 +44,10 @@ fun SearchPage(navController: NavHostController) {
             value = searchText,
             onValueChange = { searchText = it },
             label = { Text("검색") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
         )
-
         LaunchedEffect(searchText) {
             filteredList = if (searchText.isBlank()) {
                 originalList
@@ -54,7 +55,7 @@ fun SearchPage(navController: NavHostController) {
                 originalList.filter { it.contains(searchText) }
             }
         }
-
+        Divider()
         LazyColumn {
             items(filteredList) { item ->
                 ListItem(gameName = item, navController = navController, modifier = Modifier.weight(1f))
@@ -70,7 +71,6 @@ fun ListItem(gameName: String, navController: NavHostController, modifier: Modif
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .border(1.dp, Color.Black)
             .clickable { navController.navigate("ServerList/$gameName") }
             .padding(8.dp),
         contentAlignment = Alignment.Center,
@@ -81,4 +81,5 @@ fun ListItem(gameName: String, navController: NavHostController, modifier: Modif
             modifier = Modifier.padding(8.dp),
         )
     }
+    Divider()
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -52,7 +53,9 @@ fun ServerDetail(serverName: String) {
     var isTable by remember { mutableStateOf(true) }
     val priceInfoList = generatePriceInfoList()
 
-    Column {
+    Column(
+        modifier = Modifier.padding(bottom = 16.dp) // 아래 간격
+    ) {
         Row(
             modifier = Modifier
                 .height(40.dp)
@@ -65,6 +68,7 @@ fun ServerDetail(serverName: String) {
                 isTable = false
             }
         }
+        Spacer(modifier = Modifier.height(16.dp))
         if (isTable) {
             TableList(priceInfoList = priceInfoList)
         } else {

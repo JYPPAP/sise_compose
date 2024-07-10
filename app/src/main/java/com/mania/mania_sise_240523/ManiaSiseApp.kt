@@ -43,6 +43,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.filled.Build
 import com.mania.mania_sise_240523.AddServer
 import com.mania.mania_sise_240523.GameList
+import com.mania.mania_sise_240523.PolicyPage
 
 import java.text.SimpleDateFormat
 import java.util.*
@@ -81,7 +82,7 @@ fun ManiaSiseApp() {
                     AppHeader("추가하기", "", navController)
                 }
                 currentRoute == "SettingPage" -> AppHeader("설정","", navController)
-                currentRoute == "PrivatePage" -> AppHeader("개인정보처리방침","", navController)
+                currentRoute == "PolicyPage" -> AppHeader("개인정보처리방침","", navController)
                 currentRoute == "Splash" -> {}
             }
         },
@@ -114,8 +115,8 @@ fun ManiaSiseApp() {
             composable("GameList") {
                 GameList(navController = navController)
             }
-            composable("AddServer") {
-
+            composable("PolicyPage") {
+                PolicyPage()
             }
             composable(
                 route = "AddServer/{gameName}",
@@ -124,9 +125,6 @@ fun ManiaSiseApp() {
                 val gameName = backStackEntry.arguments?.getString("gameName") ?: ""
                 AddServer(gameName, navController)
             }
-
-
-
             composable("SettingPage") {
                 SettingPage(navController = navController)
             }

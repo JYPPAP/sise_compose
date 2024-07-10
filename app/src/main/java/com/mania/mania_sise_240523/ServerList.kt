@@ -62,7 +62,6 @@ fun InfoLinkItem(subIdx: Number, navController: NavHostController) {
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .border(1.dp, Color.Black)
             .clickable { navController.navigate("ServerDetail/Server$subIdx") },
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -82,4 +81,5 @@ fun InfoLinkItem(subIdx: Number, navController: NavHostController) {
             modifier = Modifier.weight(2f)
         )
     }
+    Divider()
 }

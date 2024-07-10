@@ -90,7 +90,6 @@ fun InfoRankItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .border(1.dp, Color.Black)
             .clickable {
                 onShowDialogChange(true)
                 onItemSelected(gameName) // 선택된 게임 이름 저장
@@ -109,6 +108,7 @@ fun InfoRankItem(
         )
         RandomNumberWithArrow()
     }
+    Divider()
 }
 
 @Composable
