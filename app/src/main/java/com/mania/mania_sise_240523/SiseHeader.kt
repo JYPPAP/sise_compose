@@ -63,7 +63,7 @@ fun AppHeader(title: String, info: String?, navController: NavHostController) {
                     )
                 ),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Bottom,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             if (title === "Main") {
                 ClickableIcon(Icons.Default.Place, "HomePage", navController)

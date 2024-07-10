@@ -4,8 +4,11 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,22 +17,20 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 import androidx.compose.foundation.layout.height
+
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.DrawStyle
-import androidx.compose.ui.unit.Dp
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+
 import co.yml.charts.axis.AxisData
 import co.yml.charts.axis.DataCategoryOptions
 import co.yml.charts.common.model.AccessibilityConfig
@@ -156,7 +157,6 @@ fun InfoLinkItem(priceInfo: PriceInfo) {
                 textAlign = TextAlign.Center,
             )
         }
-
     }
 }
 
@@ -168,59 +168,45 @@ data class PriceInfo(
 
 
 /* #################################### Chart #################################### */
-fun getRandomEntries() = List(4) { entryOf(it, Random.nextFloat() * 16f) }
-val chartEntryModelProducer = ChartEntryModelProducer(getRandomEntries())
+@Composable
+fun GraphList(priceInfoList: List<PriceInfo>) {
+    val maxRange = priceInfoList[0].averagePrice
+    val barData = DataUtils.getBarChartData(priceInfoList.size, maxRange, BarChartType.VERTICAL, DataCategoryOptions())
+    val yStepSize = 5
 
-Chart(
-chart = columnChart(),
-chartModelProducer = chartEntryModelProducer,
-startAxis = rememberStartAxis(),
-bottomAxis = rememberBottomAxis(),
-)
+    val xAxisData = AxisData.Builder()
+        .axisStepSize(30.dp)
+        .steps(barData.size - 1)
+        .bottomPadding(40.dp)
+        .axisLabelAngle(20f)
+        .startDrawPadding(25.dp)
+        .labelData { index ->
+            if (index % 2 == 0) {
+                priceInfoList[index].date.substringAfter("2024-")
+            } else {
+                "" // 홀수 인덱스인 경우 빈 문자열 반환
+            }
+        }
+        .build()
+    val yAxisData = AxisData.Builder()
+        .steps(yStepSize)
+        .labelAndAxisLinePadding(4.dp)
+        .axisOffset(20.dp)
+        .labelData { index -> priceInfoList[index].averagePrice.toString() }
+        .build()
 
-/**
- * Barchart with solid bars
- *
- */
-//@Composable
-//fun GraphList(priceInfoList: List<PriceInfo>) {
-//    val maxRange = priceInfoList[0].averagePrice
-//    val barData = DataUtils.getBarChartData(priceInfoList.size, maxRange, BarChartType.VERTICAL, DataCategoryOptions())
-//    val yStepSize = 5
-//
-//    val xAxisData = AxisData.Builder()
-//        .axisStepSize(30.dp)
-//        .steps(barData.size - 1)
-//        .bottomPadding(40.dp)
-//        .axisLabelAngle(20f)
-//        .startDrawPadding(25.dp)
-//        .labelData { index ->
-//            if (index % 2 == 0) {
-//                priceInfoList[index].date.substringAfter("2024-")
-//            } else {
-//                "" // 홀수 인덱스인 경우 빈 문자열 반환
-//            }
-//        }
-//        .build()
-//    val yAxisData = AxisData.Builder()
-//        .steps(yStepSize)
-//        .labelAndAxisLinePadding(4.dp)
-//        .axisOffset(20.dp)
-//        .labelData { index -> priceInfoList[index].averagePrice.toString() }
-//        .build()
-//
-//    val barChartData = BarChartData(
-//        chartData = barData,
-//        xAxisData = xAxisData,
-//        yAxisData = yAxisData,
-//        barStyle = BarStyle(
-//            paddingBetweenBars = 0.dp,
-//            barWidth = 25.dp,
-//        ),
-//        showYAxis = true,
-//        showXAxis = true,
-//        horizontalExtraSpace = 20.dp,
-//    )
-//
-//    BarChart(modifier = Modifier.height(700.dp).background(Color.Red), barChartData = barChartData)
-//}
+    val barChartData = BarChartData(
+        chartData = barData,
+        xAxisData = xAxisData,
+        yAxisData = yAxisData,
+        barStyle = BarStyle(
+            paddingBetweenBars = 0.dp,
+            barWidth = 25.dp,
+        ),
+        showYAxis = true,
+        showXAxis = true,
+        horizontalExtraSpace = 20.dp,
+    )
+
+    BarChart(modifier = Modifier.height(700.dp).background(Color.Red), barChartData = barChartData)
+}

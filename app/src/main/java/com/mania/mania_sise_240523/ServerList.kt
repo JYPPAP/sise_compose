@@ -22,7 +22,7 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun ServerList(serverName: String, navController: NavHostController) {
-//    val navController = rememberNavController()
+
     val currentRoute = navController.currentDestination?.route
 
     LazyColumn {

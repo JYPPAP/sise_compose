@@ -10,7 +10,7 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun SettingPage(navController: NavHostController) {
-//    val navController = rememberNavController()
+
     val currentRoute = navController.currentDestination?.route
 
     Box(/*modifier = Modifier.padding(paddingValues)*/) {
